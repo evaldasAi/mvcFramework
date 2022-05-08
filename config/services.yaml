@@ -1,0 +1,19 @@
+services:
+  cache:
+    alias: cache.filesystem
+
+  cache.void:
+    class: Cache\Adapter\Void\VoidCachePool
+
+  cache.filesystem:
+    class: Cache\Adapter\FileSystem\FileSystemCachePool
+    arguments: ['@flysystem.filesystem']
+
+  filesystem.filesystem:
+    class: League\Flysystem\Adapter\Local
+    arguments: ['@kernel.project_dir%/var/cache/%kernel.environment%/fs_cache']
+
+  middleware.cache:
+    class: App\Aiddleware\Cache
+    arguments: ['@kernel.project_dir%/var/cache/%kernel.environment%/fs_cache']
+    public: true
